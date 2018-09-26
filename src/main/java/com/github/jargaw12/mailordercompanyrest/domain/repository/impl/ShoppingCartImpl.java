@@ -59,4 +59,9 @@ public class ShoppingCartImpl implements ShoppingCart {
     public List<CartPosition> getProducts() {
         return shoppingCart;
     }
+
+    @Override
+    public int getTotalQuantity() {
+        return shoppingCart.stream().mapToInt(CartPosition::getQuantity).reduce((sum, p)->sum+p).getAsInt();
+    }
 }

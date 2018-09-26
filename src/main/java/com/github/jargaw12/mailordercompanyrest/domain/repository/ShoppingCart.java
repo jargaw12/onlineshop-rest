@@ -8,4 +8,5 @@ import java.util.Map;
 
 public interface ShoppingCart {
     public List<CartPosition> getProducts();
+    public int getTotalQuantity();
 }
