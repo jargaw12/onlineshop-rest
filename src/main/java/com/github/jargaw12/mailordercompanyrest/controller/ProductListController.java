@@ -19,15 +19,22 @@ public class ProductListController {
     @Autowired
     ProductListService productListService;
 
+    @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    private List<Product> getProductList() {
+    private Iterable<Product> getProductList() {
         return productListService.getProducts();
     }
 
-    @RequestMapping( params = { "page", "size" }, method =  RequestMethod.GET )
-    public List<Product> findPaginated(
-            @RequestParam( "page" ) int page, @RequestParam( "size" ) int size){
-        Page<Product> resultPage = productListService.findPaginated( page, size );
-        return resultPage.getContent();
+//    @RequestMapping(path = "/numberofpages", method = RequestMethod.GET)
+//    @ResponseStatus(HttpStatus.OK)
+//    private int getNumberOfPages(@RequestParam("size") int size) {
+//        return productListService.getNumberOfPages(size);
+//    }
+
+    @RequestMapping(path = "/page",method =  RequestMethod.GET )
+    public Page<Product> findPaginated(@RequestParam( value = "number") int number,
+                                       @RequestParam(value = "size") int size){
+        Page<Product> resultPage = productListService.findPaginated( number, size );
+        return resultPage;
     }
 }

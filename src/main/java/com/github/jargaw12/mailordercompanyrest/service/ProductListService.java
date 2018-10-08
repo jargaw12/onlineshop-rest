@@ -6,7 +6,8 @@ import org.springframework.data.domain.Page;
 import java.util.List;
 
 public interface ProductListService {
-    public List<Product> getProducts();
-
+    public Iterable<Product> getProducts();
     Page<Product> findPaginated(int page, int size);
+
+//    int getNumberOfPages(int size);
 }

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8080")
+@CrossOrigin(origins = "*")
 @RequestMapping(path ="/shoppingcart")
 public class ShoppingCartController {
     @Autowired
@@ -27,32 +27,21 @@ public class ShoppingCartController {
         return shoppingCartService.getTotalQuantity();
     }
 
-//    @RequestMapping(method=RequestMethod.POST)
-//    @ResponseStatus(HttpStatus.OK)
-//    @ResponseBody
-//    public String removeProductFromCart (@RequestBody CartPosition cartPosition) {
-//        shoppingCartService.removeProduct(cartPosition);
-//        return "redirect:/";
-//    }
-
-//    @RequestMapping(method=RequestMethod.PUT)
-//    @ResponseStatus(HttpStatus.OK)
-//    @ResponseBody
-//    public String incrementCart (@RequestBody CartPosition cartPosition) {
-//        shoppingCartService.plusProduct(cartPosition);
-//        return "redirect:/";
-//    }
-
-//    @RequestMapping(method=RequestMethod.DELETE)
-//    @ResponseStatus(HttpStatus.OK)
-//    @ResponseBody
-//    public String deleteProduct (@RequestBody CartPosition cartPosition) {
-//        shoppingCartService.removeProduct(cartPosition);
-//        return "redirect:/";
-//    }
-
     @DeleteMapping(path="/{id}")
     public void delete(@PathVariable("id") int id){
         shoppingCartService.removeProduct(id);
+        System.out.println("Usunieto produkt nr: " + id);
+    }
+
+    @PatchMapping(path="/{id}")
+    public void plusminus(@PathVariable("id") int id, @RequestBody int quantity){
+        shoppingCartService.plusminusProduct(id, quantity);
+        System.out.println("Zmieniono liczbę kupionych produktów o: " + quantity);
+    }
+
+    @PostMapping()
+    public void create(@RequestBody Long id){
+        shoppingCartService.addProduct(id);
+        System.out.println("Dodano nowy produkt: "+id);
     }
 }

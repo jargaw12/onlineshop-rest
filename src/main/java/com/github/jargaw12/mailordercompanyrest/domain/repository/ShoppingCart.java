@@ -7,6 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 public interface ShoppingCart {
-    public List<CartPosition> getProducts();
-    public int getTotalQuantity();
+    public Map<Long, Integer> getProducts();
+    public Product getProductById(Long id);
 }
