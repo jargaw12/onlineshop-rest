@@ -13,28 +13,27 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
-@RequestMapping( path ="/productlist")
 @RestController
 public class ProductListController {
     @Autowired
     ProductListService productListService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(path ="/productlist", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     private Iterable<Product> getProductList() {
         return productListService.getProducts();
     }
 
-//    @RequestMapping(path = "/numberofpages", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.OK)
-//    private int getNumberOfPages(@RequestParam("size") int size) {
-//        return productListService.getNumberOfPages(size);
-//    }
 
-    @RequestMapping(path = "/page",method =  RequestMethod.GET )
+    @RequestMapping(path = "/productlist/page",method =  RequestMethod.GET )
     public Page<Product> findPaginated(@RequestParam( value = "number") int number,
                                        @RequestParam(value = "size") int size){
         Page<Product> resultPage = productListService.findPaginated( number, size );
         return resultPage;
+    }
+
+    @RequestMapping(path = "/product/{id}",method =  RequestMethod.GET )
+    public Product findProduct(@PathVariable( value = "id") long id){
+        return productListService.getProductById(id);
     }
 }

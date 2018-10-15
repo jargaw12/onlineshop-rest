@@ -8,6 +8,7 @@ import java.util.List;
 public interface ProductListService {
     public Iterable<Product> getProducts();
     Page<Product> findPaginated(int page, int size);
+    Product getProductById(long id);
 
 //    int getNumberOfPages(int size);
 }

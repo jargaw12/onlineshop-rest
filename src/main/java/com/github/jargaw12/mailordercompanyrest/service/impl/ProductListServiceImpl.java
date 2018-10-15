@@ -28,6 +28,11 @@ public class ProductListServiceImpl implements ProductListService {
         return productListRepo.findAll(PageRequest.of(page-1,size));
     }
 
+    @Override
+    public Product getProductById(long id) {
+        return productListRepo.getOne(id);
+    }
+
     private List<Product> createProducts(){
         Product p1 = new Product();
         Product p2 = new Product();
