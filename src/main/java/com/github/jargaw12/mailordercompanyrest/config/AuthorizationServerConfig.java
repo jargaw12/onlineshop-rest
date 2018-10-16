@@ -24,21 +24,23 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 
         security
-                .checkTokenAccess("isAuthenticated()");
+                .checkTokenAccess("isAuthenticated()")
+                .addTokenEndpointAuthenticationFilter(new CorsFilter());
     }
+
 
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
                 .inMemory()
-                .withClient("my-trusted-client")
+                .withClient("frontclient")
                 .authorizedGrantTypes("client_credentials", "password")
                 .authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT")
                 .scopes("read","write","trust")
                 .resourceIds("oauth2-resource")
-                .accessTokenValiditySeconds(5000)
-                .secret("{noop}secret");
+                .accessTokenValiditySeconds(20)
+                .secret("{noop}frontpassword");
 //                .secret(passwordEncoder.encode("secret"));
     }
 
