@@ -39,6 +39,6 @@ public class MailordercompanyRestApplication {
         if (repo.count()==0){
             repo.save(new Users("user2", "{noop}password2", Arrays.asList(new Role("USER"), new Role("ACTUATOR"))));
         }
-        builder.userDetailsService(username -> new CustomUserDetail(repo.findByUsername(username).get()));
+        builder.userDetailsService(username -> new CustomUserDetail(repo.findUsersByUsername(username).get()));
     }
 }
