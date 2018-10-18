@@ -7,7 +7,10 @@ import com.github.jargaw12.mailordercompanyrest.domain.repository.UserRepository
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
 
@@ -37,8 +40,8 @@ public class MailordercompanyRestApplication {
     @Autowired
     public void authenticationManager(AuthenticationManagerBuilder builder, UserRepository repo) throws Exception {
         if (repo.count()==0){
-            repo.save(new Users("user2", "{noop}password2", Arrays.asList(new Role("USER"), new Role("ACTUATOR"))));
+//            repo.save(new Users("user", getPasswordEncoder().encode("password"), Arrays.asList(new Role("USER"), new Role("ACTUATOR"))));
         }
-        builder.userDetailsService(username -> new CustomUserDetail(repo.findUsersByUsername(username).get()));
+        builder.userDetailsService(username -> new CustomUserDetail(repo.findByUsername(username)));
     }
 }
