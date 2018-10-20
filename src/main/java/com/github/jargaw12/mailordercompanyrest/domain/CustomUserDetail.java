@@ -39,12 +39,12 @@ public class CustomUserDetail extends Users implements UserDetails {
 
     @Override
     public String getPassword() {
-        return super.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return super.getUsername();
+        return username;
     }
 
     @Override
@@ -69,12 +69,6 @@ public class CustomUserDetail extends Users implements UserDetails {
 
     public CustomUserDetail setAuthorities(Collection<? extends GrantedAuthority> authorities) {
         this.authorities = authorities;
-        return this;
-    }
-
-    @Override
-    public CustomUserDetail setUsername(String username) {
-        this.username = username;
         return this;
     }
 }

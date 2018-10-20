@@ -1,6 +1,6 @@
 package com.github.jargaw12.mailordercompanyrest.config;
-//import org.springframework.security.crypto.password.PasswordEncoder;
 import com.github.jargaw12.mailordercompanyrest.service.impl.CustomUserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 
@@ -17,8 +17,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private AuthenticationManager authenticationManager;
 
-//    @Autowired
-//    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Autowired
     CustomUserDetailsService userDetailsService;
 

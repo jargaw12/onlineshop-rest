@@ -5,19 +5,14 @@
  */
 package com.github.jargaw12.mailordercompanyrest.service.impl;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
-
 import com.github.jargaw12.mailordercompanyrest.domain.CustomUserDetail;
 import com.github.jargaw12.mailordercompanyrest.domain.Users;
 import com.github.jargaw12.mailordercompanyrest.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 /**
  *
@@ -25,31 +20,20 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
-//
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
+    private final UserRepository repo;
 
     @Autowired
-    private UserRepository repo;
+    public CustomUserDetailsService(UserRepository repo) {
+        this.repo = repo;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        System.out.println("loadUserByUsername----");
-//        Users users = repo.findByUsername(username);
-//        if(users == null){
-//            throw new UsernameNotFoundException("UserName "+username+" not found");
-//        }
-////        users.setPassword(passwordEncoder.encode(users.getPassword()));
-//        return new CustomUserDetail(users);
-        Users u=repo.findByUsername(username);
-        UserDetails userDetails=null;
-        if (u!=null){
-            userDetails =User.withDefaultPasswordEncoder().username(u.getUsername()).password(u.getPassword()).roles(u.getRoles().get(0).getName()).build();
-
+        Users users = repo.findByUsername(username);
+        if(users == null){
+            throw new UsernameNotFoundException("UserName "+username+" not found");
         }
-        else  throw new UsernameNotFoundException("No user with "
-                + "the name " + username + "was found in the database");
-        return userDetails;
+        UserDetails customUserDetails=new CustomUserDetail(users);
+        return new User(customUserDetails.getUsername(),customUserDetails.getPassword(),customUserDetails.getAuthorities());
     }
-
 }
