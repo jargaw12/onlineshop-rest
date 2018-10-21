@@ -1,7 +1,11 @@
 package com.github.jargaw12.mailordercompanyrest.domain;
 
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -9,18 +13,19 @@ import java.util.List;
 public class Users {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "user_id")
-    private Long id;
     @Column(name = "username")
+    @NotEmpty(message = "username must not be empty")
     private String username;
+    @JsonIgnore
     @Column(name = "password")
+    @NotEmpty(message = "email must not be empty")
     private String password;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role", joinColumns =
-    @JoinColumn(name = "user_id"), inverseJoinColumns =
-    @JoinColumn(name = "role_id"))
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+//    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Role> roles;
 
     public Users() {
@@ -33,20 +38,10 @@ public class Users {
     }
 
     public Users(Users users) {
-        this.id = users.id;
         this.username = users.username;
         this.password = users.password;
         this.roles = users.roles;
 
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Users setId(Long id) {
-        this.id = id;
-        return this;
     }
 
     public String getUsername() {
