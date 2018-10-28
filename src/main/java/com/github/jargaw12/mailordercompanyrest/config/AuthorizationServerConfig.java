@@ -35,15 +35,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-//        clients
-//                .inMemory()
-//                .withClient("frontclient")
-//                .authorizedGrantTypes("client_credentials", "password")
-//                .authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT")
-//                .scopes("read","write","trust")
-//                .resourceIds("oauth2-resource")
-//                .accessTokenValiditySeconds(300)
-//                .secret("{noop}frontpassword");
+        clients
+                .inMemory()
+                .withClient("frontclient")
+                .authorizedGrantTypes("client_credentials", "password")
+                .authorities("ROLE_CLIENT","ROLE_TRUSTED_CLIENT")
+                .scopes("read","write","trust")
+                .resourceIds("oauth2-resource")
+                .accessTokenValiditySeconds(300)
+                .secret("{noop}frontpassword");
 //                .secret(passwordEncoder.encode("secret"));
     }
 

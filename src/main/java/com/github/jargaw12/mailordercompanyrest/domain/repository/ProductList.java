@@ -8,6 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface ProductList extends JpaRepository<Product,Long> {
-    public Product findProductById(Long id);
+    Product findProductById(Long id);
 
 }

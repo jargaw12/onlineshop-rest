@@ -3,9 +3,11 @@ package com.github.jargaw12.mailordercompanyrest.service.impl;
 import com.github.jargaw12.mailordercompanyrest.domain.Product;
 import com.github.jargaw12.mailordercompanyrest.domain.repository.ProductList;
 import com.github.jargaw12.mailordercompanyrest.service.ProductListService;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -31,6 +33,11 @@ public class ProductListServiceImpl implements ProductListService {
     @Override
     public Product getProductById(long id) {
         return productListRepo.findProductById(id);
+    }
+
+    @Override
+    public Page<Product> findPaginatedSorted(int page, int size, Sort.Direction direction, String name) {
+        return productListRepo.findAll(PageRequest.of(page-1,size,direction,name));
     }
 
 //    private List<Product> createProducts(){

@@ -55,8 +55,8 @@ public class ShoppingCartImpl implements ShoppingCart {
         products.add(p4);
 
         shoppingCart.put(p1.getId(),1);
-        shoppingCart.put(p2.getId(),1);
-        shoppingCart.put(p3.getId(),1);
+        shoppingCart.put(p2.getId(),2);
+        shoppingCart.put(p3.getId(),3);
         shoppingCart.put(p4.getId(),1);
     }
 
