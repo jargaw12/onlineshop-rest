@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * User repository for CRUD operations.
  */
 public interface UserRepository extends JpaRepository<Users,Long> {
-    Users findByUsername(String username);
+    Users findByEmailaddress(String email);
 }

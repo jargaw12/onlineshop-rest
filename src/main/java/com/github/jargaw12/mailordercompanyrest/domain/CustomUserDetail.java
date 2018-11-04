@@ -15,7 +15,7 @@ public class CustomUserDetail extends Users implements UserDetails {
     private String username;
 
     public CustomUserDetail(Users user) {
-        this.username = user.getUsername();
+        this.username = user.getEmailaddress();
         this.password = user.getPassword();
         this.authorities = translate(user.getRoles());
     }

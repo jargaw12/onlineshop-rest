@@ -24,7 +24,7 @@ public class SignupController {
         if (errors.hasErrors()){
             //TODO
         }
-        if (!signupService.findUser(users.getUsername())){
+        if (!signupService.findUser(users.getEmailaddress())){
             signupService.addUser(users);
         }
         else throw new UserPrincipalNotFoundException("Użytkownik o podanym loginie lub e-mailu już istnieje");

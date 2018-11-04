@@ -1,7 +1,6 @@
 package com.github.jargaw12.mailordercompanyrest.service.impl;
 
 import com.github.jargaw12.mailordercompanyrest.domain.CartPosition;
-import com.github.jargaw12.mailordercompanyrest.domain.Product;
 import com.github.jargaw12.mailordercompanyrest.domain.repository.ShoppingCart;
 import com.github.jargaw12.mailordercompanyrest.service.ShoppingCartService;
 import org.springframework.beans.factory.annotation.Autowired;

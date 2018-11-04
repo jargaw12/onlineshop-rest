@@ -28,10 +28,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users users = repo.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Users users = repo.findByEmailaddress(email);
         if(users == null){
-            throw new UsernameNotFoundException("UserName "+username+" not found");
+            throw new UsernameNotFoundException("Email "+email+" not found");
         }
         UserDetails customUserDetails=new CustomUserDetail(users);
         return new User(customUserDetails.getUsername(),customUserDetails.getPassword(),customUserDetails.getAuthorities());

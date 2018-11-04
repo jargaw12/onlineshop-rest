@@ -34,8 +34,8 @@ public class SignupServiceImpl implements SignupService {
     }
 
     @Override
-    public boolean findUser(String username) {
-        Users users = userRepository.findByUsername(username);
+    public boolean findUser(String email) {
+        Users users = userRepository.findByEmailaddress(email);
         return users != null;
     }
 }

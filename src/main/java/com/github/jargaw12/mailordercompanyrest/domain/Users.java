@@ -1,55 +1,97 @@
 package com.github.jargaw12.mailordercompanyrest.domain;
 
-
-import org.codehaus.jackson.annotate.JsonIgnore;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table(name = "users")
-public class Users {
-
+@Table(name = "users", schema = "public", catalog = "mailordercompany")
+public class Users implements Serializable {
     @Id
-    @Column(name = "username")
-    @NotEmpty(message = "username must not be empty")
-    private String username;
-    @JsonIgnore
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private long id;
+    @Column(name = "address_id")
+    private Long addressId;
     @Column(name = "password")
-    @NotEmpty(message = "email must not be empty")
     private String password;
+    @Column(name = "emailaddress")
+    private String emailaddress;
+    @Column(name = "phonenumber")
+    private String phonenumber;
+    @Column(name = "firstname")
+    private String firstname;
+    @Column(name = "lastname")
+    private String lastname;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "userrole",
+            joinColumns = @JoinColumn(name = "userid"),
+            inverseJoinColumns = @JoinColumn(name = "roleid"))
 //    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
     private List<Role> roles;
 
-    public Users() {
+    public long getId() {
+        return id;
     }
 
-    public Users(String username, String password, List<Role> roles) {
-        this.username = username;
+    public Users setId(long id) {
+        this.id = id;
+        return this;
+    }
+
+    public Long getAddressId() {
+        return addressId;
+    }
+
+    public Users setAddressId(Long addressId) {
+        this.addressId = addressId;
+        return this;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public Users setPassword(String password) {
         this.password = password;
-        this.roles = roles;
+        return this;
     }
 
-    public Users(Users users) {
-        this.username = users.username;
-        this.password = users.password;
-        this.roles = users.roles;
-
+    public String getEmailaddress() {
+        return emailaddress;
     }
 
-    public String getUsername() {
-        return username;
+    public Users setEmailaddress(String emailaddress) {
+        this.emailaddress = emailaddress;
+        return this;
     }
 
-    public Users setUsername(String username) {
-        this.username = username;
+    public String getPhonenumber() {
+        return phonenumber;
+    }
+
+    public Users setPhonenumber(String phonenumber) {
+        this.phonenumber = phonenumber;
+        return this;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public Users setFirstname(String firstname) {
+        this.firstname = firstname;
+        return this;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public Users setLastname(String lastname) {
+        this.lastname = lastname;
         return this;
     }
 
@@ -62,11 +104,22 @@ public class Users {
         return this;
     }
 
-    public String getPassword() {
-        return password;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Users that = (Users) o;
+        return id == that.id &&
+                Objects.equals(password, that.password) &&
+                Objects.equals(emailaddress, that.emailaddress) &&
+                Objects.equals(phonenumber, that.phonenumber) &&
+                Objects.equals(firstname, that.firstname) &&
+                Objects.equals(lastname, that.lastname) &&
+                Objects.equals(addressId, that.addressId);
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public int hashCode() {
+        return Objects.hash(password, emailaddress, phonenumber, firstname, lastname, addressId, id);
     }
 }
