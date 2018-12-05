@@ -19,10 +19,10 @@ public class AppWideExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(RecordNotFoundException.class)
-    public final ResponseEntity handleUserNotFoundException(RecordNotFoundException ex, WebRequest request) {
+    public final ResponseEntity<ErrorDetails> handleUserNotFoundException(RecordNotFoundException ex, WebRequest request) {
         List<String> details = new ArrayList<>();
         details.add(ex.getLocalizedMessage());
         ErrorDetails error = new ErrorDetails(new Date(), "Record Not Found", details);
-        return new ResponseEntity(error, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }

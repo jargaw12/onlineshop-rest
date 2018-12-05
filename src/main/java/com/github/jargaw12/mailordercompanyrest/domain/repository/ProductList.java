@@ -10,23 +10,21 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProductList extends JpaRepository<Product,Long> {
+public interface ProductList extends JpaRepository<Product, Long> {
     Product findProductById(Long id);
+
     @Query("select p " +
             "from Product p " +
             "join ProductSubcategory s on p.subcategoryid=s.id " +
             "join ProductCategory c on s.categoryid=c.id " +
             "where c.id=:categoryid")
     Page<Product> findAllProductInCategory(@Param("categoryid") long categoryid, Pageable pageable);
+
     @Query("select p " +
             "from Product p " +
             "join ProductSubcategory s on p.subcategoryid=s.id " +
             "where s.categoryid=:categoryid " +
             "and s.id=:subcategoryid")
-    Page<Product> findAllProductInSubcategory(@Param("categoryid") long categoryid,@Param("subcategoryid") long subcategoryid, Pageable pageable);
-//    Page<Product> findBySubcategory(Long id);
-//    public ProductGroup findByCategoryName(String name);
-//    public ProductGroup findByGroupName(String name);
-
+    Page<Product> findAllProductInSubcategory(@Param("categoryid") long categoryid, @Param("subcategoryid") long subcategoryid, Pageable pageable);
 
 }

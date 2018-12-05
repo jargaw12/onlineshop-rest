@@ -17,6 +17,13 @@ public class ProductSubcategory implements Serializable {
     private SubcategorydictionaryEntity subcategoryname;
     @Column(name = "productcateryid")
     private long categoryid;
+    @ManyToOne
+    @JoinColumn(name = "productcateryid", insertable = false, updatable = false)
+    ProductCategory category;
+
+    @ManyToOne
+    @JoinColumn(name = "subcategoryname", insertable = false, updatable = false)
+    SubcategorydictionaryEntity subcategoryName;
 //    @ManyToOne
 //    @JoinColumn(name = "id", referencedColumnName = "productsubcateryid", nullable = false)
 //    @OneToMany(mappedBy = "subcategory")

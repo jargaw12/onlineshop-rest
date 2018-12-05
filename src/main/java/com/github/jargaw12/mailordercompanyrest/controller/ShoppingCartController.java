@@ -1,48 +1,72 @@
 package com.github.jargaw12.mailordercompanyrest.controller;
 
-import com.github.jargaw12.mailordercompanyrest.domain.CartPosition;
+import com.github.jargaw12.mailordercompanyrest.domain.Shoppingcart;
+import com.github.jargaw12.mailordercompanyrest.service.EmailSender;
+import com.github.jargaw12.mailordercompanyrest.service.PdfService;
 import com.github.jargaw12.mailordercompanyrest.service.ShoppingCartService;
+import com.github.jargaw12.mailordercompanyrest.service.UserService;
+import com.itextpdf.text.DocumentException;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*")
-@RequestMapping(path ="/shoppingcart")
+@RequestMapping(path = "/shoppingcart")
 public class ShoppingCartController {
     @Autowired
     ShoppingCartService shoppingCartService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    PdfService pdfService;
+
+    @Autowired
+    EmailSender emailSender;
+
     @RequestMapping(method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<CartPosition> getProductsFromShoppingCart() {
-        return shoppingCartService.getProducts();
+    public List<Shoppingcart> getProducts(Authentication authentication) throws JRException, DocumentException, IOException, URISyntaxException, com.lowagie.text.DocumentException, MessagingException {
+//        pdfService.generateInvoice(shoppingCartService.getProducts(authentication.getName()),userService.getUserByUsername(authentication.getName()));
+//        emailSender.sendEmail("jarrcioo@gmail.com","Hi",null);
+        return shoppingCartService.getProducts(authentication.getName());
     }
 
-    @RequestMapping(method = RequestMethod.GET, path ="/totalquantity")
-    public int getTotalQuantityInOrder() {
-        return shoppingCartService.getTotalQuantity();
+    @RequestMapping(method = RequestMethod.GET, path = "/totalquantity")
+    public int getTotalQuantity(Authentication authentication) {
+        if (authentication.isAuthenticated())
+            return shoppingCartService.getTotalQuantity(authentication.getName());
+        else return 0;
     }
 
-    @DeleteMapping(path="/{id}")
-    public void delete(@PathVariable("id") int id){
-        shoppingCartService.removeProduct(id);
+    @DeleteMapping(path = "/delete/{id}")
+    public ResponseEntity<?> delete(Authentication authentication, @PathVariable("id") long id) {
+        shoppingCartService.removeProduct(id, authentication.getName());
         System.out.println("Usunieto produkt nr: " + id);
-    }
-
-    @PostMapping(path="/{id}")
-    public ResponseEntity<?> plusminus(@PathVariable("id") int id, @RequestBody int quantity){
-        shoppingCartService.plusminusProduct(id, quantity);
-        System.out.println("Zmieniono liczbę kupionych produktów o: " + quantity);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @PostMapping()
-    public void create(@RequestBody Long id){
-        shoppingCartService.addProduct(id);
-        System.out.println("Dodano nowy produkt: "+id);
+    @PostMapping(path = "/change")
+    public ResponseEntity<?> changeQuantity(Authentication authentication,@RequestBody Shoppingcart product) {
+        shoppingCartService.plusminusProduct(product.getId(), product.getQuantity(), authentication.getName());
+        System.out.println("Zmieniono liczbę kupionych produktów o: " + product.getQuantity());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(path = "/add")
+    public void addProduct(Authentication authentication,@RequestBody Shoppingcart product) throws MessagingException {
+        shoppingCartService.addProduct(product.getId(), authentication.getName());
+        System.out.println("Dodano nowy produkt: " + product.getId());
     }
 }

@@ -1,5 +1,6 @@
 package com.github.jargaw12.mailordercompanyrest.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,11 +12,12 @@ import java.util.List;
 public class CustomUserDetail extends Users implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
+    @JsonIgnore
     private String password;
     private String username;
 
     public CustomUserDetail(Users user) {
-        this.username = user.getEmailaddress();
+        this.username = user.getUsername();
         this.password = user.getPassword();
         this.authorities = translate(user.getRoles());
     }

@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "spring.jpa.hibernate.naming-strategy",
+      "type": "java.lang.String",
+      "description": "Description for spring.jpa.hibernate.naming-strategy."
+    },
+    {
+      "name": "security.basic.enable",
+      "type": "java.lang.String",
+      "description": "Description for security.basic.enable."
+    }
+  ] }

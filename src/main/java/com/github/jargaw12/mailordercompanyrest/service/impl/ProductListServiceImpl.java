@@ -11,12 +11,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductListServiceImpl implements ProductListService {
+    private final ProductList productListRepo;
+
     @Autowired
-    ProductList productListRepo;
+    public ProductListServiceImpl(ProductList productListRepo) {
+        this.productListRepo = productListRepo;
+    }
 
     @Override
-    public Iterable<Product> getProducts() {
-        return productListRepo.findAll();
+    public Iterable<Product> getProducts(int page, int size) {
+        return productListRepo.findAll(PageRequest.of(page - 1, size));
     }
 
     @Override
@@ -24,37 +28,34 @@ public class ProductListServiceImpl implements ProductListService {
         return productListRepo.findProductById(id);
     }
 
-//    @Override
-//    public Page<Product> findPaginated(int page, int size,long category, long subcategory) {
-//        if (subcategory!=0)
-//            return productListRepo.findAllProductInSubcategory(subcategory,PageRequest.of(page,size));
-//        return productListRepo.findAllProductInCategory(category,PageRequest.of(page,size));
-//    }
-
     @Override
     public Page<Product> findPaginatedSorted(int page, int size, Sort.Direction direction, String name) {
-        return productListRepo.findAll(PageRequest.of(page-1,size,direction,name));
+        return productListRepo.findAll(PageRequest.of(page - 1, size, direction, name));
     }
-
-//    @Override
-//    public Page<Product> findProductsInSubcategory(long subcategory) {
-//        return productListRepo.findBySubcategory(subcategory);
-//    }
 
     @Override
     public Page<Product> getPage(long category, long subcategory, int number, int size, String dir, String order) {
         Sort.Direction direction;
-        if (order!=null&&dir!=null){
-            direction= Sort.Direction.fromString(dir.toUpperCase());
+        if (order != null && dir != null) {
+            direction = Sort.Direction.fromString(dir.toUpperCase());
 //            return findPaginatedSorted(number, size, direction, order);
+        } else {
+            direction = Sort.Direction.ASC;
+            order = "id";
         }
-        else{
-            direction= Sort.Direction.ASC;
-            order="id";
-        }
-        if (subcategory!=0)
-            return productListRepo.findAllProductInSubcategory(category,subcategory,PageRequest.of(number-1,size,direction,order));
-        return productListRepo.findAllProductInCategory(category,PageRequest.of(number-1,size,direction,order));
+        if (subcategory != 0)
+            return productListRepo.findAllProductInSubcategory(category, subcategory, PageRequest.of(number - 1, size, direction, order));
+        return productListRepo.findAllProductInCategory(category, PageRequest.of(number - 1, size, direction, order));
+    }
+
+    @Override
+    public void removeProduct(Product product) {
+        productListRepo.delete(product);
+    }
+
+    @Override
+    public Product addProduct(Product product) {
+        return productListRepo.save(product);
     }
 
 }

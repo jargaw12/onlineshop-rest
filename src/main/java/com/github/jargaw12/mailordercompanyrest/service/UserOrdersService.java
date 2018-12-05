@@ -1,10 +1,11 @@
 package com.github.jargaw12.mailordercompanyrest.service;
 
-import com.github.jargaw12.mailordercompanyrest.domain.Order;
+import com.github.jargaw12.mailordercompanyrest.domain.Orders;
 
 import java.util.List;
 
 public interface UserOrdersService {
-    public List<Order> getAllUserOrders();
-    public Order getOrderByID(long id);
+    List<Orders> getAllUserOrders();
+
+    Orders getOrderByID(long id);
 }

@@ -16,11 +16,14 @@ public class ProductCategory implements Serializable {
 //    @Column(name = "productgroupid", nullable = false)
 //    private long groupid;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "productsubcatery",
-            joinColumns = @JoinColumn(name = "productcateryid"),
-            inverseJoinColumns = @JoinColumn(name = "subcategoryname"))
-    private List<SubcategorydictionaryEntity> subcategories;
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name = "productsubcatery",
+//            joinColumns = @JoinColumn(name = "productcateryid"),
+//            inverseJoinColumns = @JoinColumn(name = "subcategoryname"))
+//    private List<SubcategorydictionaryEntity> subcategories;
+
+    @OneToMany(mappedBy = "category")
+    List<ProductSubcategory> subcategories;
 
     @ManyToOne
     @JoinColumn(name="productgroupid", nullable=false)
@@ -42,11 +45,21 @@ public class ProductCategory implements Serializable {
         return this;
     }
 
-    public List<SubcategorydictionaryEntity> getSubcategories() {
+//    public List<SubcategorydictionaryEntity> getSubcategories() {
+//        return subcategories;
+//    }
+//
+//    public ProductCategory setSubcategories(List<SubcategorydictionaryEntity> subcategories) {
+//        this.subcategories = subcategories;
+//        return this;
+//    }
+
+
+    public List<ProductSubcategory> getSubcategories() {
         return subcategories;
     }
 
-    public ProductCategory setSubcategories(List<SubcategorydictionaryEntity> subcategories) {
+    public ProductCategory setSubcategories(List<ProductSubcategory> subcategories) {
         this.subcategories = subcategories;
         return this;
     }

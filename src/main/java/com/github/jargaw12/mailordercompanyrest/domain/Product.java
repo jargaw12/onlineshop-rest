@@ -1,13 +1,20 @@
 package com.github.jargaw12.mailordercompanyrest.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 public class Product {
+    @JsonIgnore
+    @OneToMany(mappedBy = "item")
+    List<Shoppingcart> productInCarts;
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "name", nullable = false, length = 50)
     private String name;
@@ -19,13 +26,15 @@ public class Product {
     private String image;
     @Column(name = "productsubcateryid")
     private long subcategoryid;
-
-    public Product() {
-    }
+    @OneToMany(mappedBy = "productByProductid")
+    private Collection<Orderdetails> orderdetailsById;
 
 //    @ManyToOne
 //    @JoinColumn(name = "productsubcateryid")
 //    ProductSubcategory subcategory;
+
+    public Product() {
+    }
 
     public long getId() {
         return id;
@@ -67,10 +76,7 @@ public class Product {
         return image;
     }
 
-    public Product setImage(String image) {
-        this.image = image;
-        return this;
-    }
+
 
 //    public ProductSubcategory getSubcategory() {
 //        return subcategory;
@@ -80,6 +86,21 @@ public class Product {
 //        this.subcategory = subcategory;
 //        return this;
 //    }
+
+
+    public long getSubcategoryid() {
+        return subcategoryid;
+    }
+
+    public Product setSubcategoryid(long subcategoryid) {
+        this.subcategoryid = subcategoryid;
+        return this;
+    }
+
+    public Product setImage(String image) {
+        this.image = image;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -96,5 +117,14 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description, price, image);
+    }
+
+//    public Collection<Orderdetails> getOrderdetailsById() {
+//        return orderdetailsById;
+//    }
+
+    public Product setOrderdetailsById(Collection<Orderdetails> orderdetailsById) {
+        this.orderdetailsById = orderdetailsById;
+        return this;
     }
 }

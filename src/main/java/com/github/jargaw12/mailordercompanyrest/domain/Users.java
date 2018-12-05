@@ -1,36 +1,59 @@
 package com.github.jargaw12.mailordercompanyrest.domain;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import javax.persistence.*;
-import java.io.Serializable;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "users", schema = "public", catalog = "mailordercompany")
-public class Users implements Serializable {
+public class Users {
+    @JsonIgnore
+    @OneToMany(mappedBy = "buyer")
+    List<Shoppingcart> shoppingCart;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
     @Column(name = "address_id")
     private Long addressId;
+    @JsonIgnore
+    @NotNull
     @Column(name = "password")
     private String password;
-    @Column(name = "emailaddress")
-    private String emailaddress;
+    @Email
+    @Column(name = "username")
+    private String username;
     @Column(name = "phonenumber")
     private String phonenumber;
     @Column(name = "firstname")
     private String firstname;
     @Column(name = "lastname")
     private String lastname;
-
+    @Column(name = "birthdate")
+    private Date birthdate;
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "userrole",
             joinColumns = @JoinColumn(name = "userid"),
             inverseJoinColumns = @JoinColumn(name = "roleid"))
 //    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
+    @JsonIgnore
     private List<Role> roles;
+    @JsonIgnore
+    @OneToMany(mappedBy = "usersByUserid")
+    private Collection<Orders> ordersById;
+
+    @ManyToOne
+    @JoinColumn(name = "address_id", insertable = false, updatable = false)
+    Address address;
 
     public long getId() {
         return id;
@@ -59,12 +82,12 @@ public class Users implements Serializable {
         return this;
     }
 
-    public String getEmailaddress() {
-        return emailaddress;
+    public String getUsername() {
+        return username;
     }
 
-    public Users setEmailaddress(String emailaddress) {
-        this.emailaddress = emailaddress;
+    public Users setUsername(String username) {
+        this.username = username;
         return this;
     }
 
@@ -95,6 +118,16 @@ public class Users implements Serializable {
         return this;
     }
 
+    public Date getBirthdate() throws ParseException {
+        DateFormat df= new SimpleDateFormat("yyyyy-mm-dd");
+        return df.parse(birthdate.toString());
+    }
+
+    public Users setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
+        return this;
+    }
+
     public List<Role> getRoles() {
         return roles;
     }
@@ -104,22 +137,21 @@ public class Users implements Serializable {
         return this;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Users that = (Users) o;
-        return id == that.id &&
-                Objects.equals(password, that.password) &&
-                Objects.equals(emailaddress, that.emailaddress) &&
-                Objects.equals(phonenumber, that.phonenumber) &&
-                Objects.equals(firstname, that.firstname) &&
-                Objects.equals(lastname, that.lastname) &&
-                Objects.equals(addressId, that.addressId);
+    public Address getAddress() {
+        return address;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(password, emailaddress, phonenumber, firstname, lastname, addressId, id);
+    public Users setAddress(Address address) {
+        this.address = address;
+        return this;
+    }
+
+    //    public Collection<Orders> getOrdersById() {
+//        return ordersById;
+//    }
+
+    public Users setOrdersById(Collection<Orders> ordersById) {
+        this.ordersById = ordersById;
+        return this;
     }
 }

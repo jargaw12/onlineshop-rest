@@ -14,13 +14,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-/**
- *
- * @author developer
- */
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserRepository repo;
+
 
     @Autowired
     public CustomUserDetailsService(UserRepository repo) {
@@ -28,12 +26,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Users users = repo.findByEmailaddress(email);
-        if(users == null){
-            throw new UsernameNotFoundException("Email "+email+" not found");
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        Users users = repo.findByUsername(username);
+        if (users == null) {
+            throw new UsernameNotFoundException("UserName " + username + " not found");
         }
-        UserDetails customUserDetails=new CustomUserDetail(users);
-        return new User(customUserDetails.getUsername(),customUserDetails.getPassword(),customUserDetails.getAuthorities());
+        UserDetails customUserDetails = new CustomUserDetail(users);
+        return new User(customUserDetails.getUsername(), customUserDetails.getPassword(), customUserDetails.getAuthorities());
     }
 }
