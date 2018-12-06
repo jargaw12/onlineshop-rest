@@ -1,8 +1,8 @@
 package com.github.jargaw12.mailordercompanyrest.domain.TransportModel;
 
 public class TransportOrder {
-    int orderNo;
-    String orderDateTime;
+    private int orderNo;
+    private String orderDateTime;
 
     public int getOrderNo() {
         return orderNo;

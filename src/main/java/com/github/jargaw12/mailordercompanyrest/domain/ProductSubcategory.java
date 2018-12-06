@@ -3,7 +3,6 @@ package com.github.jargaw12.mailordercompanyrest.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @Table(name = "productsubcatery", schema = "public", catalog = "mailordercompany")
@@ -14,7 +13,7 @@ public class ProductSubcategory implements Serializable {
     private long id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "subcategoryname")
-    private SubcategorydictionaryEntity subcategoryname;
+    private SubcategoryDictionary subcategoryname;
     @Column(name = "productcateryid")
     private long categoryid;
     @ManyToOne
@@ -23,7 +22,7 @@ public class ProductSubcategory implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "subcategoryname", insertable = false, updatable = false)
-    SubcategorydictionaryEntity subcategoryName;
+    SubcategoryDictionary subcategoryName;
 //    @ManyToOne
 //    @JoinColumn(name = "id", referencedColumnName = "productsubcateryid", nullable = false)
 //    @OneToMany(mappedBy = "subcategory")
@@ -62,11 +61,11 @@ public class ProductSubcategory implements Serializable {
 //    }
 
 
-    public SubcategorydictionaryEntity getSubcategoryname() {
+    public SubcategoryDictionary getSubcategoryname() {
         return subcategoryname;
     }
 
-    public ProductSubcategory setSubcategoryname(SubcategorydictionaryEntity subcategoryname) {
+    public ProductSubcategory setSubcategoryname(SubcategoryDictionary subcategoryname) {
         this.subcategoryname = subcategoryname;
         return this;
     }

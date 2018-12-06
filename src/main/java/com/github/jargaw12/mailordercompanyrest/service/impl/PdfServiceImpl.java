@@ -1,13 +1,11 @@
 package com.github.jargaw12.mailordercompanyrest.service.impl;
 
-import com.github.jargaw12.mailordercompanyrest.domain.Orderdetails;
-import com.github.jargaw12.mailordercompanyrest.domain.Orders;
-import com.github.jargaw12.mailordercompanyrest.domain.Shoppingcart;
+import com.github.jargaw12.mailordercompanyrest.domain.Order;
+import com.github.jargaw12.mailordercompanyrest.domain.OrderItem;
 import com.github.jargaw12.mailordercompanyrest.domain.Users;
 import com.github.jargaw12.mailordercompanyrest.service.PdfService;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -15,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -35,27 +32,26 @@ public class PdfServiceImpl implements PdfService {
     public PdfServiceImpl() throws IOException, DocumentException {
     }
 
-
     @Override
-    public void generateInvoice(Orders orders,List<Orderdetails> details, Users user) throws DocumentException, IOException, URISyntaxException {
+    public void generateInvoice(Order order, List<OrderItem> details, Users user) throws DocumentException, IOException {
         Document document = new Document();
-        FileOutputStream file= new FileOutputStream("src/main/resources/prints/Order_"+orders.getId()+".pdf");
+        FileOutputStream file= new FileOutputStream("src/main/resources/prints/Order_"+ order.getId()+".pdf");
         PdfWriter.getInstance(document, file);
         document.open();
 
         document.add(createCurrentDate("Warszawa"));
-        document.add(createTitle("Dokument PRO FORMA: "+orders.getId()));
+        document.add(createTitle("Dokument PRO FORMA: "+ order.getId()));
         document.add(addLogo());
         document.add(createHeader("Sprzedawca"));
         document.add(createSellerDetails());
         document.add(createHeader("Nabywca"));
         document.add(createCustomerDetails(user));
         document.add(createTabe(details));
-        document.add(addTotalAmount(orders.getTotalprice()));
+        document.add(addTotalAmount(order.getTotalprice()));
         document.add(addAttention());
-        if (orders.getPaymentByPaymentid().getId()==1){
-            document.add(createPaymentDetails(orders));
-            document.add(qrCode(orders));
+        if (order.getPaymentByPaymentid().getId()==1){
+            document.add(createPaymentDetails(order));
+            document.add(qrCode(order));
             document.add(createScanText());
         }
         document.close();
@@ -71,7 +67,7 @@ public class PdfServiceImpl implements PdfService {
         return paragraph;
     }
 
-    private PdfPTable createTabe(Collection<Orderdetails> items) {
+    private PdfPTable createTabe(Collection<OrderItem> items) {
         float[] columnWidths = {1f, 8f, 2f, 3f, 3f};
         PdfPTable table = new PdfPTable(columnWidths);
         table.setWidthPercentage(100);
@@ -89,9 +85,9 @@ public class PdfServiceImpl implements PdfService {
                 });
     }
 
-    private void addRows(PdfPTable table, Collection<Orderdetails> items) {
+    private void addRows(PdfPTable table, Collection<OrderItem> items) {
         DecimalFormat df = new DecimalFormat("0.00");
-        for (Orderdetails item : items) {
+        for (OrderItem item : items) {
             table.addCell(String.valueOf(1));
             table.addCell(item.getProductByProductid().getName());
             table.addCell(String.valueOf(item.getQuantity()));
@@ -100,17 +96,16 @@ public class PdfServiceImpl implements PdfService {
         }
     }
 
-    private Paragraph createTitle(String title) throws DocumentException {
+    private Paragraph createTitle(String title) {
         Paragraph paragraph = new Paragraph(title, fontBold);
         paragraph.setAlignment(Element.ALIGN_CENTER);
-        ;
         return paragraph;
     }
 
-    private Paragraph createSellerDetails() throws DocumentException {
+    private Paragraph createSellerDetails() {
         return new Paragraph("Ubrani Sp. z o.o.\n" +
-                "Wymyślona 1\n" +
-                "00-001 Warszawa\n\n",font);
+                "Urbanowicza 11 ,\n" +
+                "01-476 Warszawa\n\n",font);
     }
 
 
@@ -120,13 +115,13 @@ public class PdfServiceImpl implements PdfService {
                 + users.getAddress().getPostcode() + " " + users.getAddress().getCity() + "\n\n",font);
     }
 
-    private Paragraph createPaymentDetails(Orders orders){
-        BarcodeQRCode barcodeQRCode = new BarcodeQRCode("||63114000008575925659435273|"+(Math.round(orders.getTotalprice()*100))+"|Ubrani|Zamówienie nr "+orders.getId()+"|||", 1500, 1500, null);
+    private Paragraph createPaymentDetails(Order order){
+        BarcodeQRCode barcodeQRCode = new BarcodeQRCode("||63114000008575925659435273|"+(Math.round(order.getTotalprice()*100))+"|Ubrani|Zamówienie nr "+ order.getId()+"|||", 1500, 1500, null);
 
         return new Paragraph("Odbiorca: Ubrani\n" +
                 "Nr rachunku: 63114000008575925659435273\n" +
-                "Kwota: "+orders.getTotalprice()+"\n"+
-                "Tytułem: Zamówienie nr "+orders.getId()+"\n", font);
+                "Kwota: "+ order.getTotalprice()+"\n"+
+                "Tytułem: Zamówienie nr "+ order.getId()+"\n", font);
     }
 
     private Paragraph addTotalAmount(Double total) {
@@ -150,8 +145,8 @@ public class PdfServiceImpl implements PdfService {
         return img;
     }
 
-    private Image qrCode(Orders orders) throws DocumentException {
-        BarcodeQRCode barcodeQRCode = new BarcodeQRCode("||63114000008575925659435273|"+(Math.round(orders.getTotalprice()*100))+"|Ubrani|Zamówienie nr "+orders.getId()+"|||", 1500, 1500, null);
+    private Image qrCode(Order order) throws DocumentException {
+        BarcodeQRCode barcodeQRCode = new BarcodeQRCode("||63114000008575925659435273|"+(Math.round(order.getTotalprice()*100))+"|Ubrani|Zamówienie nr "+ order.getId()+"|||", 1500, 1500, null);
         Image codeQrImage = barcodeQRCode.getImage();
         codeQrImage.scaleAbsolute(100, 100);
         codeQrImage.setAlignment(Element.ALIGN_CENTER);

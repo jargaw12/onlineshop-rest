@@ -1,41 +1,39 @@
 package com.github.jargaw12.mailordercompanyrest.domain;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.springframework.context.annotation.Scope;
-import org.springframework.context.annotation.ScopedProxyMode;
-import org.springframework.security.core.userdetails.User;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "shoppingcart", schema = "public", catalog = "mailordercompany")
-public class Shoppingcart {
+public class ShoppingCartItem {
     @Id
     @GeneratedValue
     @Column(name = "id")
     private long id;
-    @Column(name = "quantity", nullable = true)
+    @Column(name = "quantity")
     private Integer quantity;
 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
+    private
     Users buyer;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
+    private
     Product item;
 
-    public Shoppingcart() {
+    public ShoppingCartItem() {
     }
 
     public long getId() {
         return id;
     }
 
-    public Shoppingcart setId(long id) {
+    public ShoppingCartItem setId(long id) {
         this.id = id;
         return this;
     }
@@ -44,12 +42,12 @@ public class Shoppingcart {
         return quantity;
     }
 
-    public Shoppingcart setQuantity(Integer quantity) {
+    public ShoppingCartItem setQuantity(Integer quantity) {
         this.quantity = quantity;
         return this;
     }
 
-    public Shoppingcart(Integer quantity, Users buyer, Product item) {
+    public ShoppingCartItem(Integer quantity, Users buyer, Product item) {
         this.quantity = quantity;
         this.buyer = buyer;
         this.item = item;
@@ -59,7 +57,7 @@ public class Shoppingcart {
 //        return buyer;
 //    }
 //
-//    public Shoppingcart setBuyer(Users buyer) {
+//    public ShoppingCartItem setBuyer(Users buyer) {
 //        this.buyer = buyer;
 //        return this;
 //    }
@@ -68,7 +66,7 @@ public class Shoppingcart {
         return item;
     }
 
-    public Shoppingcart setItem(Product item) {
+    public ShoppingCartItem setItem(Product item) {
         this.item = item;
         return this;
     }
@@ -77,7 +75,7 @@ public class Shoppingcart {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Shoppingcart that = (Shoppingcart) o;
+        ShoppingCartItem that = (ShoppingCartItem) o;
         return id == that.id &&
                 Objects.equals(quantity, that.quantity);
     }

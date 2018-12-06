@@ -4,8 +4,10 @@ import org.codehaus.jackson.annotate.JsonProperty;
 
 public class AuthToken {
     @JsonProperty
+    private
     String accessToken;
     @JsonProperty
+    private
     String tokenType;
 
     public String getAccessToken() {

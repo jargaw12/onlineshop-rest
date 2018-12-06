@@ -6,27 +6,28 @@ import java.util.Collection;
 import java.util.Objects;
 
 @Entity
-public class Orders {
+@Table(name = "orders", schema = "public", catalog = "mailordercompany")
+public class Order {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private long id;
-    @Column(name = "totalprice", nullable = true, precision = 0)
+    @Column(name = "totalprice")
     private Double totalprice;
     @Column(name = "createdtime", nullable = false)
     private Date createdtime;
-    @Column(name = "deliverycost", nullable = false, precision = 0)
+    @Column(name = "deliverycost", nullable = false)
     private double deliverycost;
-    @Column(name = "invoice", nullable = true, length = 100)
+    @Column(name = "invoice", length = 100)
     private String invoice;
-    @OneToMany(mappedBy = "ordersByOrderId")
-    private Collection<Orderdetails> orderdetailsById;
+    @OneToMany(mappedBy = "orderByOrderId")
+    private Collection<OrderItem> orderItemById;
     @ManyToOne
     @JoinColumn(name = "deliveryid", referencedColumnName = "id", nullable = false)
     private Delivery deliveryByDeliveryid;
     @ManyToOne
     @JoinColumn(name = "paymentid", referencedColumnName = "id", nullable = false)
-    private Paymentdictionary paymentByPaymentid;
+    private PaymentMethod paymentByPaymentid;
     @ManyToOne
     @JoinColumn(name = "userid", referencedColumnName = "id", nullable = false)
     private Users usersByUserid;
@@ -38,7 +39,7 @@ public class Orders {
         return id;
     }
 
-    public Orders setId(long id) {
+    public Order setId(long id) {
         this.id = id;
         return this;
     }
@@ -47,7 +48,7 @@ public class Orders {
         return totalprice;
     }
 
-    public Orders setTotalprice(Double totalprice) {
+    public Order setTotalprice(Double totalprice) {
         this.totalprice = totalprice;
         return this;
     }
@@ -56,7 +57,7 @@ public class Orders {
         return createdtime;
     }
 
-    public Orders setCreatedtime(Date createdtime) {
+    public Order setCreatedtime(Date createdtime) {
         this.createdtime = createdtime;
         return this;
     }
@@ -65,7 +66,7 @@ public class Orders {
         return deliverycost;
     }
 
-    public Orders setDeliverycost(double deliverycost) {
+    public Order setDeliverycost(double deliverycost) {
         this.deliverycost = deliverycost;
         return this;
     }
@@ -74,7 +75,7 @@ public class Orders {
         return invoice;
     }
 
-    public Orders setInvoice(String invoice) {
+    public Order setInvoice(String invoice) {
         this.invoice = invoice;
         return this;
     }
@@ -83,12 +84,12 @@ public class Orders {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Orders orders = (Orders) o;
-        return id == orders.id &&
-                Double.compare(orders.deliverycost, deliverycost) == 0 &&
-                Objects.equals(totalprice, orders.totalprice) &&
-                Objects.equals(createdtime, orders.createdtime) &&
-                Objects.equals(invoice, orders.invoice);
+        Order order = (Order) o;
+        return id == order.id &&
+                Double.compare(order.deliverycost, deliverycost) == 0 &&
+                Objects.equals(totalprice, order.totalprice) &&
+                Objects.equals(createdtime, order.createdtime) &&
+                Objects.equals(invoice, order.invoice);
     }
 
     @Override
@@ -96,12 +97,12 @@ public class Orders {
         return Objects.hash(id, totalprice, createdtime, deliverycost, invoice);
     }
 
-    public Collection<Orderdetails> getOrderdetailsById() {
-        return orderdetailsById;
+    public Collection<OrderItem> getOrderItemById() {
+        return orderItemById;
     }
 
-    public Orders setOrderdetailsById(Collection<Orderdetails> orderdetailsById) {
-        this.orderdetailsById = orderdetailsById;
+    public Order setOrderItemById(Collection<OrderItem> orderItemById) {
+        this.orderItemById = orderItemById;
         return this;
     }
 
@@ -109,17 +110,17 @@ public class Orders {
         return deliveryByDeliveryid;
     }
 
-    public Orders setDeliveryByDeliveryid(Delivery deliveryByDeliveryid) {
+    public Order setDeliveryByDeliveryid(Delivery deliveryByDeliveryid) {
         this.deliveryByDeliveryid = deliveryByDeliveryid;
         return this;
     }
 
 
-    public Paymentdictionary getPaymentByPaymentid() {
+    public PaymentMethod getPaymentByPaymentid() {
         return paymentByPaymentid;
     }
 
-    public Orders setPaymentByPaymentid(Paymentdictionary paymentByPaymentid) {
+    public Order setPaymentByPaymentid(PaymentMethod paymentByPaymentid) {
         this.paymentByPaymentid = paymentByPaymentid;
         return this;
     }
@@ -128,7 +129,7 @@ public class Orders {
 //        return usersByUserid;
 //    }
 
-    public Orders setUsersByUserid(Users usersByUserid) {
+    public Order setUsersByUserid(Users usersByUserid) {
         this.usersByUserid = usersByUserid;
         return this;
     }
@@ -137,7 +138,7 @@ public class Orders {
         return addressByAdresId;
     }
 
-    public Orders setAddressByAdresId(Address addressByAdresId) {
+    public Order setAddressByAdresId(Address addressByAdresId) {
         this.addressByAdresId = addressByAdresId;
         return this;
     }

@@ -2,8 +2,6 @@ package com.github.jargaw12.mailordercompanyrest.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 

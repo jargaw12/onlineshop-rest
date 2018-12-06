@@ -1,8 +1,8 @@
 package com.github.jargaw12.mailordercompanyrest.domain.TransportModel;
 
 public class OrderUser {
-    String usernameOrEmail;
-    String password;
+    private String usernameOrEmail;
+    private String password;
 
     public OrderUser(String usernameOrEmail, String password) {
         this.usernameOrEmail = usernameOrEmail;

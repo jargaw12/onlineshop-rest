@@ -20,9 +20,10 @@ public class ProductCategory implements Serializable {
 //    @JoinTable(name = "productsubcatery",
 //            joinColumns = @JoinColumn(name = "productcateryid"),
 //            inverseJoinColumns = @JoinColumn(name = "subcategoryname"))
-//    private List<SubcategorydictionaryEntity> subcategories;
+//    private List<SubcategoryDictionary> subcategories;
 
     @OneToMany(mappedBy = "category")
+    private
     List<ProductSubcategory> subcategories;
 
     @ManyToOne
@@ -34,7 +35,8 @@ public class ProductCategory implements Serializable {
 //    private CategorydictionaryEntity name;
     @ManyToOne
     @JoinColumn(name = "productcategoryname")
-    CategorydictionaryEntity categoryname;
+    private
+CategorydictionaryEntity categoryname;
 
     public long getId() {
         return id;
@@ -45,11 +47,11 @@ public class ProductCategory implements Serializable {
         return this;
     }
 
-//    public List<SubcategorydictionaryEntity> getSubcategories() {
+//    public List<SubcategoryDictionary> getSubcategories() {
 //        return subcategories;
 //    }
 //
-//    public ProductCategory setSubcategories(List<SubcategorydictionaryEntity> subcategories) {
+//    public ProductCategory setSubcategories(List<SubcategoryDictionary> subcategories) {
 //        this.subcategories = subcategories;
 //        return this;
 //    }

@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Orderdetails {
+@Table(name = "orderdetails", schema = "public", catalog = "mailordercompany")
+public class OrderItem {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue
@@ -16,13 +17,13 @@ public class Orderdetails {
     private Product productByProductid;
     @ManyToOne
     @JoinColumn(name = "order_id", referencedColumnName = "id")
-    private Orders ordersByOrderId;
+    private Order orderByOrderId;
 
     public long getId() {
         return id;
     }
 
-    public Orderdetails setId(long id) {
+    public OrderItem setId(long id) {
         this.id = id;
         return this;
     }
@@ -31,7 +32,7 @@ public class Orderdetails {
         return quantity;
     }
 
-    public Orderdetails setQuantity(int quantity) {
+    public OrderItem setQuantity(int quantity) {
         this.quantity = quantity;
         return this;
     }
@@ -40,7 +41,7 @@ public class Orderdetails {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Orderdetails that = (Orderdetails) o;
+        OrderItem that = (OrderItem) o;
         return id == that.id &&
                 quantity == that.quantity;
     }
@@ -55,17 +56,17 @@ public class Orderdetails {
             return productByProductid;
     }
 
-    public Orderdetails setProductByProductid(Product productByProductid) {
+    public OrderItem setProductByProductid(Product productByProductid) {
         this.productByProductid = productByProductid;
         return this;
     }
 //
-//    public Orders getOrdersByOrderId() {
-//        return ordersByOrderId;
+//    public Order getOrdersByOrderId() {
+//        return orderByOrderId;
 //    }
 //
-    public Orderdetails setOrdersByOrderId(Orders ordersByOrderId) {
-        this.ordersByOrderId = ordersByOrderId;
+    public OrderItem setOrderByOrderId(Order orderByOrderId) {
+        this.orderByOrderId = orderByOrderId;
         return this;
     }
 }

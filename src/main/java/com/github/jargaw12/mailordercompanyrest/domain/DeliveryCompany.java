@@ -1,34 +1,32 @@
 package com.github.jargaw12.mailordercompanyrest.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Deliverydictionary {
-    private long id;
-    private String name;
-
+@Table(name = "deliverycompanydictionary", schema = "public", catalog = "mailordercompany")
+public class DeliveryCompany {
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue
+    private long id;
+    @Column(name = "name", nullable = false, length = 50)
+    private String name;
+
     public long getId() {
         return id;
     }
 
-    public Deliverydictionary setId(long id) {
+    public DeliveryCompany setId(long id) {
         this.id = id;
         return this;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 50)
     public String getName() {
         return name;
     }
 
-    public Deliverydictionary setName(String name) {
+    public DeliveryCompany setName(String name) {
         this.name = name;
         return this;
     }
@@ -37,7 +35,7 @@ public class Deliverydictionary {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Deliverydictionary that = (Deliverydictionary) o;
+        DeliveryCompany that = (DeliveryCompany) o;
         return id == that.id &&
                 Objects.equals(name, that.name);
     }

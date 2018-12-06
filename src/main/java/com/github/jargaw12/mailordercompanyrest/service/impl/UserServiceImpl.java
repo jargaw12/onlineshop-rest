@@ -11,13 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final AddressRepo addressRepo;
 
     @Autowired
-    AddressRepo addressRepo;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, AddressRepo addressRepo) {
         this.userRepository = userRepository;
+        this.addressRepo = addressRepo;
     }
 
     @Override
@@ -33,7 +32,6 @@ public class UserServiceImpl implements UserService {
                 .setFirstname(newUser.getFirstname())
                 .setLastname(newUser.getLastname())
                 .setAddress(a);
-        Users u=userRepository.save(user);
-        return u;
+        return userRepository.save(user);
     }
 }

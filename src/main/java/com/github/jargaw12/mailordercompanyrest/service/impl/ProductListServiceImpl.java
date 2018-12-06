@@ -1,7 +1,7 @@
 package com.github.jargaw12.mailordercompanyrest.service.impl;
 
 import com.github.jargaw12.mailordercompanyrest.domain.Product;
-import com.github.jargaw12.mailordercompanyrest.domain.repository.ProductList;
+import com.github.jargaw12.mailordercompanyrest.domain.repository.ProductListRepo;
 import com.github.jargaw12.mailordercompanyrest.service.ProductListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ProductListServiceImpl implements ProductListService {
-    private final ProductList productListRepo;
+    private final ProductListRepo productListRepo;
 
     @Autowired
-    public ProductListServiceImpl(ProductList productListRepo) {
+    public ProductListServiceImpl(ProductListRepo productListRepo) {
         this.productListRepo = productListRepo;
     }
 

@@ -14,10 +14,10 @@ public class Payment {
     @Column(name = "paymentdate", nullable = false)
     private Date paymentdate;
     @OneToMany(mappedBy = "paymentByPaymentid")
-    private Collection<Orders> ordersById;
+    private Collection<Order> orderById;
     @ManyToOne
     @JoinColumn(name = "paymenttype", referencedColumnName = "id", nullable = false)
-    private Paymentdictionary paymentdictionaryByPaymenttype;
+    private PaymentMethod paymentMethodByPaymenttype;
 
     public long getId() {
         return id;
@@ -51,21 +51,21 @@ public class Payment {
         return Objects.hash(id, paymentdate);
     }
 
-//    public Collection<Orders> getOrdersById() {
-//        return ordersById;
+//    public Collection<Order> getOrdersById() {
+//        return orderById;
 //    }
 
-    public Payment setOrdersById(Collection<Orders> ordersById) {
-        this.ordersById = ordersById;
+    public Payment setOrderById(Collection<Order> orderById) {
+        this.orderById = orderById;
         return this;
     }
 
-    public Paymentdictionary getPaymentdictionaryByPaymenttype() {
-        return paymentdictionaryByPaymenttype;
+    public PaymentMethod getPaymentMethodByPaymenttype() {
+        return paymentMethodByPaymenttype;
     }
 
-    public Payment setPaymentdictionaryByPaymenttype(Paymentdictionary paymentdictionaryByPaymenttype) {
-        this.paymentdictionaryByPaymenttype = paymentdictionaryByPaymenttype;
+    public Payment setPaymentMethodByPaymenttype(PaymentMethod paymentMethodByPaymenttype) {
+        this.paymentMethodByPaymenttype = paymentMethodByPaymenttype;
         return this;
     }
 }

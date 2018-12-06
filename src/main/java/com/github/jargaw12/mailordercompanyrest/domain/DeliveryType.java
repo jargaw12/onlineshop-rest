@@ -4,28 +4,29 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Paymentdictionary {
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue
+@Table(name = "deliverydictionary", schema = "public", catalog = "mailordercompany")
+public class DeliveryType {
     private long id;
-    @Column(name = "name", nullable = false, length = 50)
     private String name;
 
+    @Id
+    @Column(name = "id", nullable = false)
     public long getId() {
         return id;
     }
 
-    public Paymentdictionary setId(long id) {
+    public DeliveryType setId(long id) {
         this.id = id;
         return this;
     }
 
+    @Basic
+    @Column(name = "name", nullable = false, length = 50)
     public String getName() {
         return name;
     }
 
-    public Paymentdictionary setName(String name) {
+    public DeliveryType setName(String name) {
         this.name = name;
         return this;
     }
@@ -34,7 +35,7 @@ public class Paymentdictionary {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Paymentdictionary that = (Paymentdictionary) o;
+        DeliveryType that = (DeliveryType) o;
         return id == that.id &&
                 Objects.equals(name, that.name);
     }

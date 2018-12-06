@@ -1,7 +1,6 @@
 package com.github.jargaw12.mailordercompanyrest.domain;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -18,16 +17,16 @@ import java.util.List;
 public class Users {
     @JsonIgnore
     @OneToMany(mappedBy = "buyer")
-    List<Shoppingcart> shoppingCart;
+    List<ShoppingCartItem> shoppingCart;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private long id;
     @Column(name = "address_id")
     private Long addressId;
-    @JsonIgnore
     @NotNull
     @Column(name = "password")
+    @JsonIgnore
     private String password;
     @Email
     @Column(name = "username")
@@ -45,14 +44,14 @@ public class Users {
             joinColumns = @JoinColumn(name = "userid"),
             inverseJoinColumns = @JoinColumn(name = "roleid"))
 //    @OneToMany(fetch = FetchType.EAGER, cascade=CascadeType.ALL)
-    @JsonIgnore
     private List<Role> roles;
     @JsonIgnore
     @OneToMany(mappedBy = "usersByUserid")
-    private Collection<Orders> ordersById;
+    private Collection<Order> orderById;
 
     @ManyToOne
     @JoinColumn(name = "address_id", insertable = false, updatable = false)
+    private
     Address address;
 
     public long getId() {
@@ -72,7 +71,7 @@ public class Users {
         this.addressId = addressId;
         return this;
     }
-
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -146,12 +145,12 @@ public class Users {
         return this;
     }
 
-    //    public Collection<Orders> getOrdersById() {
-//        return ordersById;
+    //    public Collection<Order> getOrdersById() {
+//        return orderById;
 //    }
 
-    public Users setOrdersById(Collection<Orders> ordersById) {
-        this.ordersById = ordersById;
+    public Users setOrderById(Collection<Order> orderById) {
+        this.orderById = orderById;
         return this;
     }
 }

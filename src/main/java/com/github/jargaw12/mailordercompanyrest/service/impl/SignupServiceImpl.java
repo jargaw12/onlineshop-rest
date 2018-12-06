@@ -4,16 +4,13 @@ import com.github.jargaw12.mailordercompanyrest.domain.Role;
 import com.github.jargaw12.mailordercompanyrest.domain.Users;
 import com.github.jargaw12.mailordercompanyrest.domain.repository.RoleRepository;
 import com.github.jargaw12.mailordercompanyrest.domain.repository.UserRepository;
-import com.github.jargaw12.mailordercompanyrest.service.EmailSender;
+import com.github.jargaw12.mailordercompanyrest.service.EmailService;
 import com.github.jargaw12.mailordercompanyrest.service.SignupService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.util.Arrays;
 
 
@@ -22,15 +19,13 @@ import java.util.Arrays;
 public class SignupServiceImpl implements SignupService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-    final PasswordEncoder passwordEncoder;
-    final EmailSender emailSender;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public SignupServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder, EmailSender emailSender) {
+    public SignupServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
-        this.emailSender = emailSender;
     }
 
     @Override
@@ -38,8 +33,7 @@ public class SignupServiceImpl implements SignupService {
         Role role=roleRepository.findByName("USER");
         Users usersTmp= users.setRoles(Arrays.asList(role));
         usersTmp.setPassword(passwordEncoder.encode(users.getPassword()));
-        Users u=userRepository.save(usersTmp);
-        return u;
+        return userRepository.save(usersTmp);
     }
 
     @Override

@@ -7,13 +7,14 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "subcategorydictionary", schema = "public", catalog = "mailordercompany")
-public class SubcategorydictionaryEntity implements Serializable {
+public class SubcategoryDictionary implements Serializable {
     @Id
     @Column(name = "id", nullable = false)
     private long id;
     @Column(name = "name", nullable = false, length = 50)
     private String name;
     @OneToMany(mappedBy = "subcategoryName")
+    private
     List<ProductSubcategory> subcategories;
 
 
@@ -21,7 +22,7 @@ public class SubcategorydictionaryEntity implements Serializable {
         return id;
     }
 
-    public SubcategorydictionaryEntity setId(long id) {
+    public SubcategoryDictionary setId(long id) {
         this.id = id;
         return this;
     }
@@ -30,7 +31,7 @@ public class SubcategorydictionaryEntity implements Serializable {
         return name;
     }
 
-    public SubcategorydictionaryEntity setName(String name) {
+    public SubcategoryDictionary setName(String name) {
         this.name = name;
         return this;
     }
@@ -39,7 +40,7 @@ public class SubcategorydictionaryEntity implements Serializable {
 //        return subcategories;
 //    }
 
-    public SubcategorydictionaryEntity setSubcategories(List<ProductSubcategory> subcategories) {
+    public SubcategoryDictionary setSubcategories(List<ProductSubcategory> subcategories) {
         this.subcategories = subcategories;
         return this;
     }
@@ -48,7 +49,7 @@ public class SubcategorydictionaryEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SubcategorydictionaryEntity that = (SubcategorydictionaryEntity) o;
+        SubcategoryDictionary that = (SubcategoryDictionary) o;
         return id == that.id &&
                 Objects.equals(name, that.name);
     }

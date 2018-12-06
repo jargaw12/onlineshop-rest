@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Product {
     @JsonIgnore
     @OneToMany(mappedBy = "item")
-    List<Shoppingcart> productInCarts;
+    List<ShoppingCartItem> productInCarts;
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +20,14 @@ public class Product {
     private String name;
     @Column(name = "description", nullable = false, length = 50)
     private String description;
-    @Column(name = "price", nullable = false, precision = 0)
+    @Column(name = "price", nullable = false)
     private double price;
     @Column(name = "image", nullable = false, length = 200)
     private String image;
     @Column(name = "productsubcateryid")
     private long subcategoryid;
     @OneToMany(mappedBy = "productByProductid")
-    private Collection<Orderdetails> orderdetailsById;
+    private Collection<OrderItem> orderItemById;
 
 //    @ManyToOne
 //    @JoinColumn(name = "productsubcateryid")
@@ -119,12 +119,12 @@ public class Product {
         return Objects.hash(id, name, description, price, image);
     }
 
-//    public Collection<Orderdetails> getOrderdetailsById() {
-//        return orderdetailsById;
+//    public Collection<OrderItem> getOrderItemById() {
+//        return orderItemById;
 //    }
 
-    public Product setOrderdetailsById(Collection<Orderdetails> orderdetailsById) {
-        this.orderdetailsById = orderdetailsById;
+    public Product setOrderItemById(Collection<OrderItem> orderItemById) {
+        this.orderItemById = orderItemById;
         return this;
     }
 }

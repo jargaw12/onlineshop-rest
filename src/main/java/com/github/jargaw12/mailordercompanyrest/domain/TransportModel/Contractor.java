@@ -1,7 +1,7 @@
 package com.github.jargaw12.mailordercompanyrest.domain.TransportModel;
 
 public class Contractor {
-    int contractorId;
+    private int contractorId;
 
     public Contractor(int contractorId) {
         this.contractorId = contractorId;

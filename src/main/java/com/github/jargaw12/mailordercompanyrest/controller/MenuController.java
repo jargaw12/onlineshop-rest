@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/menu")
 public class MenuController {
+    private final MenuService menuService;
+
     @Autowired
-    MenuService menuService;
+    public MenuController(MenuService menuService) {
+        this.menuService = menuService;
+    }
 
     @RequestMapping(path = "/groups", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)

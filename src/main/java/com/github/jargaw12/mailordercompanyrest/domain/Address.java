@@ -32,7 +32,7 @@ public class Address {
     @Column(name = "country")
     private String country;
     @OneToMany(mappedBy = "addressByAdresId")
-    private Collection<Orders> ordersById;
+    private Collection<Order> orderById;
 
     @OneToMany(mappedBy = "address")
     List<Users> residents;
@@ -118,12 +118,12 @@ public class Address {
         return Objects.hash(id, street, streetnumber, flatnumber, postcode, city);
     }
 
-//    public Collection<Orders> getOrdersById() {
-//        return ordersById;
+//    public Collection<Order> getOrdersById() {
+//        return orderById;
 //    }
 
-    public Address setOrdersById(Collection<Orders> ordersById) {
-        this.ordersById = ordersById;
+    public Address setOrderById(Collection<Order> orderById) {
+        this.orderById = orderById;
         return this;
     }
 }

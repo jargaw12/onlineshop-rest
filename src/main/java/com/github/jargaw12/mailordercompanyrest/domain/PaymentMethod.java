@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Deliverycompanydictionary {
+@Table(name = "paymentdictionary", schema = "public", catalog = "mailordercompany")
+public class PaymentMethod {
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue
@@ -16,7 +17,7 @@ public class Deliverycompanydictionary {
         return id;
     }
 
-    public Deliverycompanydictionary setId(long id) {
+    public PaymentMethod setId(long id) {
         this.id = id;
         return this;
     }
@@ -25,7 +26,7 @@ public class Deliverycompanydictionary {
         return name;
     }
 
-    public Deliverycompanydictionary setName(String name) {
+    public PaymentMethod setName(String name) {
         this.name = name;
         return this;
     }
@@ -34,7 +35,7 @@ public class Deliverycompanydictionary {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Deliverycompanydictionary that = (Deliverycompanydictionary) o;
+        PaymentMethod that = (PaymentMethod) o;
         return id == that.id &&
                 Objects.equals(name, that.name);
     }

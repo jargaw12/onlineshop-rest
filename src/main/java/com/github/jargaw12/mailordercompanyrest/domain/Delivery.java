@@ -12,12 +12,12 @@ public class Delivery {
     private long id;
     @ManyToOne
     @JoinColumn(name = "deliverytype", referencedColumnName = "id", nullable = false)
-    private Deliverydictionary deliverydictionaryByDeliverytype;
+    private DeliveryType deliveryTypeByDeliverytype;
     @ManyToOne
     @JoinColumn(name = "deliverycompany", referencedColumnName = "id", nullable = false)
-    private Deliverycompanydictionary deliverycompanydictionaryByDeliverycompany;
+    private DeliveryCompany deliveryCompanyByDeliverycompany;
     @OneToMany(mappedBy = "deliveryByDeliveryid")
-    private Collection<Orders> ordersById;
+    private Collection<Order> orderById;
 
     public long getId() {
         return id;
@@ -42,30 +42,30 @@ public class Delivery {
     }
 
 
-    public Deliverydictionary getDeliverydictionaryByDeliverytype() {
-        return deliverydictionaryByDeliverytype;
+    public DeliveryType getDeliveryTypeByDeliverytype() {
+        return deliveryTypeByDeliverytype;
     }
 
-    public Delivery setDeliverydictionaryByDeliverytype(Deliverydictionary deliverydictionaryByDeliverytype) {
-        this.deliverydictionaryByDeliverytype = deliverydictionaryByDeliverytype;
+    public Delivery setDeliveryTypeByDeliverytype(DeliveryType deliveryTypeByDeliverytype) {
+        this.deliveryTypeByDeliverytype = deliveryTypeByDeliverytype;
         return this;
     }
 
-    public Deliverycompanydictionary getDeliverycompanydictionaryByDeliverycompany() {
-        return deliverycompanydictionaryByDeliverycompany;
+    public DeliveryCompany getDeliveryCompanyByDeliverycompany() {
+        return deliveryCompanyByDeliverycompany;
     }
 
-    public Delivery setDeliverycompanydictionaryByDeliverycompany(Deliverycompanydictionary deliverycompanydictionaryByDeliverycompany) {
-        this.deliverycompanydictionaryByDeliverycompany = deliverycompanydictionaryByDeliverycompany;
+    public Delivery setDeliveryCompanyByDeliverycompany(DeliveryCompany deliveryCompanyByDeliverycompany) {
+        this.deliveryCompanyByDeliverycompany = deliveryCompanyByDeliverycompany;
         return this;
     }
 
-//    public Collection<Orders> getOrdersById() {
-//        return ordersById;
+//    public Collection<Order> getOrdersById() {
+//        return orderById;
 //    }
 
-    public Delivery setOrdersById(Collection<Orders> ordersById) {
-        this.ordersById = ordersById;
+    public Delivery setOrderById(Collection<Order> orderById) {
+        this.orderById = orderById;
         return this;
     }
 }

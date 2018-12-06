@@ -1,24 +1,27 @@
 package com.github.jargaw12.mailordercompanyrest.controller;
 
 import com.github.jargaw12.mailordercompanyrest.domain.Product;
-import com.github.jargaw12.mailordercompanyrest.domain.Users;
 import com.github.jargaw12.mailordercompanyrest.exceptions.RecordNotFoundException;
 import com.github.jargaw12.mailordercompanyrest.service.ProductListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.Errors;
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.nio.file.attribute.UserPrincipalNotFoundException;
 
 @RestController
 @RequestMapping(path = "/products")
 public class ProductListController {
+    private final ProductListService productListService;
+
     @Autowired
-    ProductListService productListService;
+    public ProductListController(ProductListService productListService) {
+        this.productListService = productListService;
+    }
 
     @RequestMapping(path = "/all", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
@@ -51,26 +54,30 @@ public class ProductListController {
     public ResponseEntity<Product> getProduct(@PathVariable(value = "id") long id) {
         Product p = productListService.getProductById(id);
         if (p == null) throw new RecordNotFoundException("Invalid product id : " + id);
-        return new ResponseEntity<Product>(p, HttpStatus.OK);
+        return new ResponseEntity<>(p, HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/delete/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable("id") long id) {
-        Product p = productListService.getProductById(id);
-        productListService.removeProduct(p);
-        System.out.println("Usunieto produkt nr: " + id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<?> deleteProduct(Authentication authentication, @PathVariable("id") long id) {
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            Product p = productListService.getProductById(id);
+            productListService.removeProduct(p);
+            System.out.println("Usunieto produkt nr: " + id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else throw new AuthenticationCredentialsNotFoundException("Brak dostępu");
     }
 
     @RequestMapping(value = "/product", method = RequestMethod.POST)
-    public ResponseEntity<?> addProduct(@RequestBody Product product) {
-        Product p = new Product();
-        p.setImage(product.getImage());
-        p.setName(product.getName());
-        p.setDescription(product.getDescription());
-        p.setPrice(product.getPrice());
-        p.setSubcategoryid(product.getSubcategoryid());
-        productListService.addProduct(p);
-        return new ResponseEntity<>(p, HttpStatus.CREATED);
+    public ResponseEntity<?> addProduct(Authentication authentication, @RequestBody Product product) {
+        if (authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            Product p = new Product();
+            p.setImage(product.getImage());
+            p.setName(product.getName());
+            p.setDescription(product.getDescription());
+            p.setPrice(product.getPrice());
+            p.setSubcategoryid(product.getSubcategoryid());
+            productListService.addProduct(p);
+            return new ResponseEntity<>(p, HttpStatus.CREATED);
+        } else throw new AuthenticationCredentialsNotFoundException("Brak dostępu");
     }
 }
